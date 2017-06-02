@@ -11,8 +11,8 @@ $app->get('/', function ($request, $response, $args) {
     return $this->renderer->render($response, 'index.phtml', $args);
 });
 
-$app->get('/giphy', function ($request, $response, $args) {
+$app->post('/giphy', function ($request, $response, $args) {
     $giphy = new GiphyBot($this->logger, $request, $response, $args);
 
     return $giphy->getResponse();
-});
+})->setName('giphy');
