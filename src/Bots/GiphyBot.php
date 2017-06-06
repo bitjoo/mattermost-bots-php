@@ -1,5 +1,4 @@
 <?php
-
 namespace Bitjo\Bots;
 
 use Slim\Http\Request;

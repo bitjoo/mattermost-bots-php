@@ -1,6 +1,7 @@
 <?php
-
 namespace Bitjo\Middleware;
+
+use Slim\Exception\NotFoundException;
 
 class TokenGuard {
     /**
@@ -36,12 +37,12 @@ class TokenGuard {
         $tokens = $this->tokens[$routeName];
         $this->logger->debug("Tokens: " . json_encode($tokens));
 
-        if (in_array($requestToken, $tokens)) {
+        if ($tokens != null && in_array($requestToken, $tokens)) {
             $response = $next($request, $response);
         } else {
             $response = $response->withJson(array(
                 "response_type" => "ephemeral",
-                "text" => "Your Token `" . $requestToken . "` is not found."
+                "text" => "Your Token `" . $requestToken . "` is invalid."
             ));
         }
 
