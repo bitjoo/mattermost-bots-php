@@ -1,6 +1,4 @@
 <?php
-// Application middleware
-
 use Bitjo\Middleware\TokenGuard;
 
 $container = $app->getContainer();

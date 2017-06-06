@@ -1,6 +1,4 @@
 <?php
-// Routes
-
 use Bitjo\Bots\GiphyBot;
 
 $app->get('/', function ($request, $response, $args) {
