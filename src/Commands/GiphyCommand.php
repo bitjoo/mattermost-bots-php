@@ -20,12 +20,26 @@ class GiphyCommand {
         $this->logger->debug("Query: " . $query);
 
         $giphy = new Giphy();
-        $result = $giphy->random($query);
+        $result = $giphy->search($query, 50);
+        $images = $result->data;
+
+        if (is_array($images) && count($images) > 0) {
+            $rand_image_key = array_rand($images, 1);
+            $giphyUrl = $images[$rand_image_key]->images->original->url;
+        }
+
+        if (isset($giphyUrl)) {
+            $responseType = "in_channel";
+            $responseText = "**#" . $query . "**\n\n" .
+                "![" . $query . "](" . $giphyUrl . " \"" . $query . "\")";
+        } else {
+            $responseType = "ephemeral";
+            $responseText = "No image could be found with your query **" . $query . "**";
+        }
 
         return $this->response->withJson(array(
-            "response_type" => "in_channel",
-            "text" => "**#" . $query . "**\n\n" .
-                "![" . $query . "](" . $result->data->image_original_url . " \"" . $query . "\")"
+            "response_type" => $responseType,
+            "text" => $responseText
         ));
     }
 }
