@@ -1,7 +1,10 @@
 <?php
 namespace Bitjo\Middleware;
 
+use Psr\Container\ContainerInterface;
 use Slim\Exception\NotFoundException;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class TokenGuard {
     /**
@@ -16,12 +19,12 @@ class TokenGuard {
     private $logger;
     private $tokens;
 
-    public function __construct($container) {
+    public function __construct(ContainerInterface $container) {
         $this->logger = $container['logger']->withName("TokenGuard");
         $this->tokens = $container['tokens'];
     }
 
-    public function __invoke($request, $response, $next) {
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next) {
         $route = $request->getAttribute('route');
 
         // return NotFound for non existent route
@@ -34,7 +37,11 @@ class TokenGuard {
         $requestToken = $request->getParsedBody()["token"];
         $this->logger->debug("RequestToken: " . $requestToken);
 
-        $tokens = $this->tokens[$routeName];
+        if (isset($this->tokens[$routeName])) {
+            $tokens = $this->tokens[$routeName];
+        } else {
+            $tokens = null;
+        }
         $this->logger->debug("Tokens: " . json_encode($tokens));
 
         if ($tokens != null && in_array($requestToken, $tokens)) {
