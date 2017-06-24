@@ -30,7 +30,7 @@ class GiphyCommand {
 
         if (isset($giphyUrl)) {
             $responseType = "in_channel";
-            $responseText = "**#" . $query . "**\n\n" .
+            $responseText = "> **" . $query . "** #giphy\n\n" .
                 "![" . $query . "](" . $giphyUrl . " \"" . $query . "\")";
         } else {
             $responseType = "ephemeral";
