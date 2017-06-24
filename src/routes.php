@@ -1,5 +1,5 @@
 <?php
-use Bitjo\Bots\GiphyBot;
+use Bitjo\Commands\GiphyCommand;
 
 $app->get('/', function ($request, $response, $args) {
     // Sample log message
@@ -10,7 +10,7 @@ $app->get('/', function ($request, $response, $args) {
 });
 
 $app->post('/giphy', function ($request, $response, $args) {
-    $giphy = new GiphyBot($this->logger, $request, $response, $args);
+    $giphy = new GiphyCommand($this->logger, $request, $response, $args);
 
     return $giphy->getResponse();
 })->setName('giphy');

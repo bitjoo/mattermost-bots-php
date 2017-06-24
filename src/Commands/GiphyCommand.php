@@ -1,16 +1,16 @@
 <?php
-namespace Bitjo\Bots;
+namespace Bitjo\Commands;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 use rfreebern\Giphy;
 use Monolog\Logger;
 
-class GiphyBot {
+class GiphyCommand {
 
     public function __construct(Logger $logger, Request $request, Response $response, $arguments)
     {
-        $this->logger = $logger->withName("GiphyBot");
+        $this->logger = $logger->withName("GiphyCommand");
         $this->request = $request;
         $this->response = $response;
     }
@@ -24,7 +24,8 @@ class GiphyBot {
 
         return $this->response->withJson(array(
             "response_type" => "in_channel",
-            "text" => "![" . $query . "](" . $result->data->image_original_url . " \"" . $query . "\")"
+            "text" => "**#" . $query . "**\n\n" .
+                "![" . $query . "](" . $result->data->image_original_url . " \"" . $query . "\")"
         ));
     }
 }
